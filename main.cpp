@@ -5,7 +5,7 @@
 #include "TopologicalSort.hpp"
 
 int main() {
-  Graph g(6);
+  Graph g;
   g.addEdge(5, 2);
   g.addEdge(5, 0);
   g.addEdge(4, 0);

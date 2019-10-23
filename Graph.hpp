@@ -17,9 +17,6 @@ class Graph {
   NodeMap nodes;
 
 public:
-  Graph(int V); // Constructor
-
-  // function to add an edge to graph
   void addEdge(int u, int v);
 
   auto nodeCount() const -> std::size_t;

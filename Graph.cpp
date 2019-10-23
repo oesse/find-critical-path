@@ -1,8 +1,22 @@
 #include "Graph.hpp"
 
-Graph::Graph(int V) : nodes(V) {}
+#include <algorithm>
 
-void Graph::addEdge(int u, int v) { nodes[u].adjacentNodes.push_back(v); }
+namespace {
+
+void ensureNodeCapacity(NodeMap &nodes, NodeIndex capacity) {
+  if (nodes.size() < capacity) {
+    std::fill_n(std::back_inserter(nodes), capacity - nodes.size(),
+                NodeMap::value_type{});
+  }
+}
+
+} // namespace
+
+void Graph::addEdge(int u, int v) {
+  ensureNodeCapacity(nodes, std::max(u, v));
+  nodes[u].adjacentNodes.push_back(v);
+}
 
 auto Graph::nodeCount() const -> std::size_t { return nodes.size(); }
 
