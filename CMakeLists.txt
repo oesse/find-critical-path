@@ -6,6 +6,7 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 
 add_library(Graph Graph.cpp)
 add_library(TopologicalSort TopologicalSort.cpp)
+add_library(FindRoots FindRoots.cpp)
 
 add_executable(main main.cpp)
-target_link_libraries(main PRIVATE Graph TopologicalSort)
+target_link_libraries(main PRIVATE Graph TopologicalSort FindRoots)
