@@ -6,7 +6,7 @@ namespace {
 
 void ensureNodeCapacity(NodeMap &nodes, NodeIndex capacity) {
   if (nodes.size() < capacity) {
-    std::fill_n(std::back_inserter(nodes), capacity - nodes.size(),
+    std::fill_n(std::back_inserter(nodes), capacity - nodes.size() + 1,
                 NodeMap::value_type{});
   }
 }
