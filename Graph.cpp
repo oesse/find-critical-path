@@ -13,7 +13,7 @@ void ensureNodeCapacity(NodeMap &nodes, NodeIndex capacity) {
 
 } // namespace
 
-void Graph::addEdge(int u, int v) {
+void Graph::addEdge(NodeIndex u, NodeIndex v) {
   ensureNodeCapacity(nodes, std::max(u, v));
   nodes[u].adjacentNodes.push_back(v);
 }

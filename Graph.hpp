@@ -17,7 +17,7 @@ class Graph {
   NodeMap nodes;
 
 public:
-  void addEdge(int u, int v);
+  void addEdge(NodeIndex u, NodeIndex v);
 
   auto nodeCount() const -> std::size_t;
   auto adjacentNodes(NodeIndex u) const -> const NodeList &;
