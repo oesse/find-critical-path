@@ -1,6 +1,7 @@
 #include "TopologicalSort.hpp"
 
 #include <cassert>
+
 #include <queue>
 
 namespace {

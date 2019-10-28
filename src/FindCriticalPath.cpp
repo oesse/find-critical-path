@@ -1,5 +1,7 @@
 #include "FindCriticalPath.hpp"
 
+#include <cassert>
+
 #include <algorithm>
 #include <numeric>
 
@@ -7,6 +9,8 @@
 #include "TopologicalSort.hpp"
 
 auto findCriticalPath(const WeightedGraph &g, NodeIndex targetId) -> NodeList {
+  assert(targetId < g.nodeCount());
+
   const auto topOrder = topologicalSort(g);
   const auto roots = findRoots(g, topOrder);
 
