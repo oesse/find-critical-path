@@ -1,7 +1,5 @@
 #pragma once
 
-#include <cassert>
-#include <queue>
 #include <vector>
 
 using NodeIndex = std::size_t;

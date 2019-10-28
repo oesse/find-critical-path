@@ -1,11 +1,13 @@
 #include "Graph.hpp"
 
+#include <cassert>
+
 #include <algorithm>
 
 namespace {
 
 void ensureNodeCapacity(NodeMap &nodes, NodeIndex capacity) {
-  if (nodes.size() < capacity) {
+  if (capacity >= nodes.size()) {
     std::fill_n(std::back_inserter(nodes), capacity - nodes.size() + 1,
                 NodeMap::value_type{});
   }

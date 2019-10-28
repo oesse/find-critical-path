@@ -1,5 +1,8 @@
 #include "TopologicalSort.hpp"
 
+#include <cassert>
+#include <queue>
+
 namespace {
 
 auto countIncomingEdges(const Graph &g) -> std::vector<int> {
