@@ -1,4 +1,4 @@
-#include "DotParser.hpp"
+#include "ParseDotGraph.hpp"
 
 #include <catch2/catch.hpp>
 
