@@ -1,11 +1,10 @@
 #pragma once
 
+#include <functional>
 #include <istream>
 
-class DotParser {
-  std::istream &in;
+using OnEdgeFunction = std::function<void(std::string, std::string)>;
 
-public:
-  explicit DotParser(std::istream &in);
-  void parse();
-};
+void parseDotGraph(
+    std::istream &in, OnEdgeFunction onEdge = [](const auto & /* srcId */,
+                                                 const auto & /* destId */) {});

@@ -8,9 +8,8 @@ TEST_CASE("graph with single node") {
   std::stringstream in{"digraph depends {\n"
                        "\"Goo\" [label=\"foogoao\"]\n"
                        "}"};
-  DotParser parser{in};
 
-  REQUIRE_NOTHROW(parser.parse());
+  REQUIRE_NOTHROW(parseDotGraph(in));
 }
 
 TEST_CASE("graph with multiple nodes") {
@@ -18,18 +17,23 @@ TEST_CASE("graph with multiple nodes") {
                        "\"Goo\" [label=\"foogoao\"]\n"
                        "\"Boo\" [label=\"fooboao\"]\n"
                        "}"};
-  DotParser parser{in};
-
-  REQUIRE_NOTHROW(parser.parse());
+  REQUIRE_NOTHROW(parseDotGraph(in));
 }
 
 TEST_CASE("graph with single edge") {
   std::stringstream in{"digraph depends {\n"
                        "\"Goo\" -> \"Foo\"\n"
                        "}"};
-  DotParser parser{in};
 
-  REQUIRE_NOTHROW(parser.parse());
+  std::vector<std::pair<std::string, std::string>> edges;
+  auto onEdge = [&](const auto &srcId, const auto &destId) {
+    edges.push_back(std::make_pair(srcId, destId));
+  };
+  REQUIRE_NOTHROW(parseDotGraph(in, onEdge));
+
+  REQUIRE(edges.size() == 1ul);
+  REQUIRE(edges[0].first == "Goo");
+  REQUIRE(edges[0].second == "Foo");
 }
 
 TEST_CASE("graph with multiple edges") {
@@ -37,9 +41,16 @@ TEST_CASE("graph with multiple edges") {
                        "\"Goo\" -> \"Foo\"\n"
                        "\"Boo\" -> \"Foo\"\n"
                        "}"};
-  DotParser parser{in};
 
-  REQUIRE_NOTHROW(parser.parse());
+  std::vector<std::pair<std::string, std::string>> edges;
+  auto onEdge = [&](const auto &srcId, const auto &destId) {
+    edges.push_back(std::make_pair(srcId, destId));
+  };
+  REQUIRE_NOTHROW(parseDotGraph(in, onEdge));
+
+  REQUIRE(edges.size() == 2ul);
+  REQUIRE(edges[1].first == "Boo");
+  REQUIRE(edges[1].second == "Foo");
 }
 
 TEST_CASE("graph with node and edge") {
@@ -47,14 +58,10 @@ TEST_CASE("graph with node and edge") {
                        "\"Goo\" [label=\"foogoao\"]\n"
                        "\"Boo\" -> \"Foo\"\n"
                        "}"};
-  DotParser parser{in};
-
-  REQUIRE_NOTHROW(parser.parse());
+  REQUIRE_NOTHROW(parseDotGraph(in));
 }
 
 TEST_CASE("empty graph") {
   std::stringstream in{"digraph depends {}"};
-  DotParser parser{in};
-
-  REQUIRE_NOTHROW(parser.parse());
+  REQUIRE_NOTHROW(parseDotGraph(in));
 }
