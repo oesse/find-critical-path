@@ -12,7 +12,7 @@ target_sources(Dot PRIVATE ParseDotGraph.cpp)
 target_link_libraries(Dot PRIVATE Boost::boost)
 
 add_executable(main main.cpp)
-target_link_libraries(main PRIVATE Graph)
+target_link_libraries(main PRIVATE Graph Dot)
 
 
 add_test_case(Graph.test.cpp Graph)
