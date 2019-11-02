@@ -16,3 +16,5 @@ public:
 
   auto getElapsedTime(std::string_view nodeLabel) const -> double;
 };
+
+auto directoryToPackageName(std::string packageDir) -> std::string;

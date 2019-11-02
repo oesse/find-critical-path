@@ -29,3 +29,4 @@ add_test_case(FindCriticalPath.test.cpp Graph)
 
 add_test_case(ParseDotGraph.test.cpp Dot)
 
+add_test_case(Buildstats.test.cpp Buildstats)

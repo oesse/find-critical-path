@@ -8,16 +8,12 @@ auto getPackageDirectories(const std::filesystem::path &root)
     -> std::unordered_map<std::string, std::string> {
   std::unordered_map<std::string, std::string> packageDirectories;
 
-  const std::regex packageVersionRegex("(.*)-[0-9].*");
-  std::smatch match;
   for (const auto &entry : std::filesystem::directory_iterator(root)) {
     if (!entry.is_directory()) {
       continue;
     }
     const auto packageDir = entry.path().filename().string();
-
-    std::regex_match(packageDir, match, packageVersionRegex);
-    const auto &packageName = match[1].str();
+    const auto packageName = directoryToPackageName(packageDir);
     packageDirectories.insert({packageName, packageDir});
   }
 
@@ -44,6 +40,13 @@ auto parseElapsedTime(std::istream &input) -> double {
 }
 
 } // namespace
+
+const std::regex packageVersionRegex("(.*)-[0-9].*");
+auto directoryToPackageName(std::string packageDir) -> std::string {
+  std::smatch match;
+  std::regex_match(packageDir, match, packageVersionRegex);
+  return match[1].str();
+}
 
 Buildstats::Buildstats(std::filesystem::path root)
     : root{root}, packageDirectories(getPackageDirectories(root)) {}
