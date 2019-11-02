@@ -5,6 +5,7 @@ target_sources(Graph PRIVATE
   Graph.cpp
   TopologicalSort.cpp
   WeightedGraph.cpp
+  LabeledGraph.cpp
 )
 
 add_library(Dot OBJECT)
@@ -15,7 +16,7 @@ add_library(Buildstats OBJECT)
 target_sources(Buildstats PRIVATE Buildstats.cpp)
 
 add_executable(main main.cpp)
-target_link_libraries(main PRIVATE Dot Graph)
+target_link_libraries(main PRIVATE Buildstats Dot Graph)
 
 add_executable(filesystem filesystem.cpp)
 target_link_libraries(filesystem PRIVATE Buildstats)
