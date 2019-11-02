@@ -21,4 +21,5 @@ public:
   void addEdge(NodeIndex u, NodeIndex v);
   void addEdge(NodeIndex u, NodeIndex v, EdgeWeight w);
   auto weight(NodeIndex u, NodeIndex v) const -> EdgeWeight;
+  void setWeight(NodeIndex u, NodeIndex v, EdgeWeight w);
 };
