@@ -2,10 +2,11 @@ add_library(Graph OBJECT)
 target_sources(Graph PRIVATE
   FindCriticalPath.cpp
   FindRoots.cpp
+  FindSinks.cpp
   Graph.cpp
+  LabeledGraph.cpp
   TopologicalSort.cpp
   WeightedGraph.cpp
-  LabeledGraph.cpp
 )
 
 add_library(Dot OBJECT)
@@ -25,6 +26,7 @@ target_link_libraries(filesystem PRIVATE Buildstats)
 add_test_case(Graph.test.cpp Graph)
 add_test_case(TopologicalSort.test.cpp Graph)
 add_test_case(FindRoots.test.cpp Graph)
+add_test_case(FindSinks.test.cpp Graph)
 add_test_case(FindCriticalPath.test.cpp Graph)
 
 add_test_case(ParseDotGraph.test.cpp Dot)
