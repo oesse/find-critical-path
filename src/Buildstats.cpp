@@ -53,7 +53,7 @@ Buildstats::Buildstats(std::filesystem::path root)
 
 auto Buildstats::getElapsedTime(std::string_view nodeLabel) const -> double {
 
-  auto pos = nodeLabel.find(".");
+  auto pos = nodeLabel.rfind(".");
   auto packageName = nodeLabel.substr(0, pos);
   auto packageStage = nodeLabel.substr(pos + 1);
 
