@@ -2,8 +2,10 @@
 #include <iostream>
 #include <iterator>
 
+#include "Buildstats.hpp"
 #include "FindCriticalPath.hpp"
 #include "FindRoots.hpp"
+#include "FindSinks.hpp"
 #include "Graph.hpp"
 #include "LabeledGraph.hpp"
 #include "ParseDotGraph.hpp"
@@ -21,6 +23,16 @@ auto loadGraph(const std::string &dotPath, const std::string &buildstatsPath)
   std::ifstream dotFile(dotPath);
   parseDotGraph(dotFile, onEdge);
 
+  Buildstats stats{buildstatsPath};
+  for (NodeIndex i = 0; i < g.graph().nodeCount(); ++i) {
+    const auto label = g.getLabel(i).value();
+    const auto elapsedTime = stats.getElapsedTimeOrDefault(label, 0.0);
+
+    for (const auto adjacent : g.graph().adjacentNodes(i)) {
+      g.graph().setWeight(i, adjacent, elapsedTime);
+    }
+  }
+
   return g;
 }
 
@@ -33,28 +45,24 @@ int main(int argc, const char *argv[]) {
 
   const auto dotPath = argv[1];
   const auto buildstatsPath = argv[2];
-  const auto g = loadGraph(dotPath, buildstatsPath);
+  auto g = loadGraph(dotPath, buildstatsPath);
 
   std::cout << "node count: " << g.graph().nodeCount() << '\n';
 
-  auto topOrder = topologicalSort(g.graph());
-  auto roots = findRoots(g.graph(), topOrder);
+  auto sinks = findSinks(g.graph());
+  auto virtualSinkId = g.graph().nodeCount();
+  for (auto sinkId : sinks) {
+    g.graph().addEdge(sinkId, virtualSinkId, 0.0);
+  }
+  auto criticalPath = findCriticalPath(g.graph(), virtualSinkId);
 
   auto toLabel = [&](NodeIndex i) { return g.getLabel(i).value(); };
 
-  std::cout << "=================\n"
-            << "topological order\n"
-            << "=================\n";
+  std::cout << "=============\n"
+            << "critical path\n"
+            << "=============\n";
 
-  std::transform(begin(topOrder), end(topOrder),
-                 std::ostream_iterator<std::string>{std::cout, "\n"}, toLabel);
-  std::cout << '\n';
-
-  std::cout << "=====\n"
-            << "roots\n"
-            << "=====\n";
-
-  std::transform(begin(roots), end(roots),
+  std::transform(begin(criticalPath), end(criticalPath) - 1,
                  std::ostream_iterator<std::string>{std::cout, "\n"}, toLabel);
   std::cout << '\n';
 
