@@ -18,6 +18,7 @@ public:
 
   void addEdge(const NodeLabel &src, const NodeLabel &dest);
 
+  auto getIndex(const NodeLabel &label) const -> std::optional<NodeIndex>;
   auto getLabel(NodeIndex id) const -> std::optional<NodeLabel>;
 
 private:
@@ -52,11 +53,21 @@ auto LabeledGraph<GraphType>::getLabel(NodeIndex id) const
 }
 
 template <typename GraphType>
-auto LabeledGraph<GraphType>::getOrCreateNodeId(const NodeLabel &label)
-    -> NodeIndex {
+auto LabeledGraph<GraphType>::getIndex(const NodeLabel &label) const
+    -> std::optional<NodeIndex> {
   auto it = nodeIds.find(label);
   if (it != end(nodeIds)) {
     return it->second;
+  }
+  return std::nullopt;
+}
+
+template <typename GraphType>
+auto LabeledGraph<GraphType>::getOrCreateNodeId(const NodeLabel &label)
+    -> NodeIndex {
+  auto idx = getIndex(label);
+  if (idx) {
+    return idx.value();
   }
 
   nodeIds.insert({label, lastId});
