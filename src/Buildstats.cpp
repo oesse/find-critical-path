@@ -64,3 +64,12 @@ auto Buildstats::getElapsedTime(std::string_view nodeLabel) const -> double {
   std::ifstream input(filePath);
   return parseElapsedTime(input);
 }
+
+auto Buildstats::getElapsedTimeOrDefault(std::string_view nodeLabel,
+                                         double defaultValue) const -> double {
+  try {
+    return getElapsedTime(nodeLabel);
+  } catch (...) {
+    return defaultValue;
+  }
+}

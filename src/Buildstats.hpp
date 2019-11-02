@@ -15,6 +15,8 @@ public:
   Buildstats(std::filesystem::path root);
 
   auto getElapsedTime(std::string_view nodeLabel) const -> double;
+  auto getElapsedTimeOrDefault(std::string_view nodeLabel,
+                               double defaultValue) const -> double;
 };
 
 auto directoryToPackageName(std::string packageDir) -> std::string;
