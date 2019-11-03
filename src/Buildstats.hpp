@@ -19,4 +19,4 @@ public:
                                double defaultValue) const -> double;
 };
 
-auto directoryToPackageName(std::string packageDir) -> std::string;
+auto directoryToPackageName(const std::string &packageDir) -> std::string;

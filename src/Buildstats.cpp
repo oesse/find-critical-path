@@ -42,7 +42,7 @@ auto parseElapsedTime(std::istream &input) -> double {
 } // namespace
 
 const std::regex packageVersionRegex("(.*)-[0-9].*");
-auto directoryToPackageName(std::string packageDir) -> std::string {
+auto directoryToPackageName(const std::string &packageDir) -> std::string {
   std::smatch match;
   std::regex_match(packageDir, match, packageVersionRegex);
   return match[1].str();
