@@ -17,6 +17,6 @@ class Graph {
 public:
   void addEdge(NodeIndex u, NodeIndex v);
 
-  auto nodeCount() const -> std::size_t;
-  auto adjacentNodes(NodeIndex u) const -> const NodeList &;
+  [[nodiscard]] auto nodeCount() const -> std::size_t;
+  [[nodiscard]] auto adjacentNodes(NodeIndex u) const -> const NodeList &;
 };

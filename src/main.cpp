@@ -36,35 +36,44 @@ auto loadGraph(const std::string &dotPath, const std::string &buildstatsPath)
   return g;
 }
 
-int main(int argc, const char *argv[]) {
+auto main(int argc, const char *argv[]) -> int {
   if (argc != 3) {
+    // NOLINTNEXTLINE cppcoreguidelines-pro-bounds-pointer-arithmetic
     std::cerr << "usage: " << argv[0]
               << " <path/to/task-depends.dot> <path/to/buildstats-dir>\n";
     return -1;
   }
 
-  const auto dotPath = argv[1];
-  const auto buildstatsPath = argv[2];
-  auto g = loadGraph(dotPath, buildstatsPath);
+  try {
+    // NOLINTNEXTLINE cppcoreguidelines-pro-bounds-pointer-arithmetic
+    const auto dotPath = argv[1];
+    // NOLINTNEXTLINE cppcoreguidelines-pro-bounds-pointer-arithmetic
+    const auto buildstatsPath = argv[2];
+    auto g = loadGraph(dotPath, buildstatsPath);
 
-  std::cout << "node count: " << g.graph().nodeCount() << '\n';
+    std::cout << "node count: " << g.graph().nodeCount() << '\n';
 
-  auto sinks = findSinks(g.graph());
-  auto virtualSinkId = g.graph().nodeCount();
-  for (auto sinkId : sinks) {
-    g.graph().addEdge(sinkId, virtualSinkId, 0.0);
+    auto sinks = findSinks(g.graph());
+    auto virtualSinkId = g.graph().nodeCount();
+    for (auto sinkId : sinks) {
+      g.graph().addEdge(sinkId, virtualSinkId, 0.0);
+    }
+    auto criticalPath = findCriticalPath(g.graph(), virtualSinkId);
+
+    auto toLabel = [&](NodeIndex i) { return g.getLabel(i).value(); };
+
+    std::cout << "=============\n"
+              << "critical path\n"
+              << "=============\n";
+
+    std::transform(begin(criticalPath), end(criticalPath) - 1,
+                   std::ostream_iterator<std::string>{std::cout, "\n"},
+                   toLabel);
+    std::cout << '\n';
+  } catch (const std::exception &e) {
+    std::cerr << "Error: " << e.what() << '\n';
+    return -1;
   }
-  auto criticalPath = findCriticalPath(g.graph(), virtualSinkId);
-
-  auto toLabel = [&](NodeIndex i) { return g.getLabel(i).value(); };
-
-  std::cout << "=============\n"
-            << "critical path\n"
-            << "=============\n";
-
-  std::transform(begin(criticalPath), end(criticalPath) - 1,
-                 std::ostream_iterator<std::string>{std::cout, "\n"}, toLabel);
-  std::cout << '\n';
 
   return 0;
 }

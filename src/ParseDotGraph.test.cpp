@@ -31,7 +31,7 @@ TEST_CASE("graph with single edge") {
   };
   REQUIRE_NOTHROW(parseDotGraph(in, onEdge));
 
-  REQUIRE(edges.size() == 1ul);
+  REQUIRE(edges.size() == 1UL);
   REQUIRE(edges[0].first == "Goo");
   REQUIRE(edges[0].second == "Foo");
 }
@@ -48,7 +48,7 @@ TEST_CASE("graph with multiple edges") {
   };
   REQUIRE_NOTHROW(parseDotGraph(in, onEdge));
 
-  REQUIRE(edges.size() == 2ul);
+  REQUIRE(edges.size() == 2UL);
   REQUIRE(edges[1].first == "Boo");
   REQUIRE(edges[1].second == "Foo");
 }

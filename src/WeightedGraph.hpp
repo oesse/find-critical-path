@@ -7,7 +7,7 @@
 using EdgeWeight = double;
 using EdgeIndex = std::tuple<NodeIndex, NodeIndex>;
 struct EdgeIndexHash {
-  std::size_t operator()(const EdgeIndex &idx) const noexcept {
+  auto operator()(const EdgeIndex &idx) const noexcept -> std::size_t {
     std::size_t h1 = std::hash<NodeIndex>{}(std::get<0>(idx));
     std::size_t h2 = std::hash<NodeIndex>{}(std::get<1>(idx));
     return h1 ^ (h2 << 1);

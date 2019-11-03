@@ -9,7 +9,6 @@
 namespace dot {
 
 namespace x3 = boost::spirit::x3;
-namespace ascii = boost::spirit::x3::ascii;
 namespace fusion = boost::fusion;
 
 using x3::alnum;
@@ -32,7 +31,7 @@ const auto node_stmt = id >> attr_list;
 
 const auto graph_header = lit("digraph") >> id;
 
-BOOST_SPIRIT_DEFINE(edge_stmt);
+BOOST_SPIRIT_DEFINE(edge_stmt); // NOLINT
 
 template <typename Iterator>
 auto parse(Iterator first, Iterator last, const OnEdgeFunction &onEdge)
