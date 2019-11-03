@@ -12,7 +12,7 @@ auto countIncomingEdges(const Graph &g) -> std::vector<int> {
 
   // Traverse adjacency lists to fill indegrees of
   // vertices.  This step takes O(V+E) time
-  for (int u = 0; u < V; u++) {
+  for (NodeIndex u = 0; u < V; u++) {
     for (auto adjacentIndex : g.adjacentNodes(u)) {
       in_degree[adjacentIndex]++;
     }
@@ -23,7 +23,7 @@ auto countIncomingEdges(const Graph &g) -> std::vector<int> {
 
 void enqueueRootNodes(std::queue<NodeIndex> &q,
                       const std::vector<int> &in_degree) {
-  for (int i = 0; i < in_degree.size(); i++) {
+  for (NodeIndex i = 0; i < in_degree.size(); i++) {
     if (in_degree[i] == 0) {
       q.push(i);
     }
