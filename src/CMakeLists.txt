@@ -20,6 +20,9 @@ add_executable(main main.cpp)
 target_link_libraries(main PRIVATE Buildstats Dot Graph)
 set_target_properties(main PROPERTIES OUTPUT_NAME find-critical-path)
 
+include(GNUInstallDirs)
+install(TARGETS main RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
+
 add_test_case(Graph.test.cpp Graph)
 add_test_case(TopologicalSort.test.cpp Graph)
 add_test_case(FindRoots.test.cpp Graph)
