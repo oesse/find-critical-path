@@ -1,0 +1,19 @@
+dist: bionic
+language: cpp
+compiler: gcc
+addons:
+  apt:
+    sources:
+      - sourceline: 'ppa:ubuntu-toolchain-r/test'
+    packages:
+      - g++-9
+      - libboost-dev
+
+env:
+  - CXX=g++-9
+
+install:
+  - ./ci/install-catch2.sh
+
+script:
+  - cmake -H. -Bbuild && cmake --build build/ && cmake --build build/ --target test
