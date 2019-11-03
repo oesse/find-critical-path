@@ -49,7 +49,8 @@ auto directoryToPackageName(const std::string &packageDir) -> std::string {
 }
 
 Buildstats::Buildstats(std::filesystem::path root)
-    : root{root}, packageDirectories(getPackageDirectories(root)) {}
+    : root{std::move(root)},
+      packageDirectories(getPackageDirectories(this->root)) {}
 
 auto Buildstats::getElapsedTime(std::string_view nodeLabel) const -> double {
 
