@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.12)
 project(CriticialPathFinder VERSION 1.0.0 LANGUAGES CXX)
 
-option(ENABLE_CLANG_TIDY OFF)
+option(ENABLE_CLANG_TIDY "Enable static code analysis with clang-tidy" OFF)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_EXTENSIONS OFF)
