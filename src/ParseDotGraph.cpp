@@ -54,7 +54,7 @@ auto parse(Iterator first, Iterator last, const OnEdgeFunction &onEdge)
 }
 } // namespace dot
 
-void parseDotGraph(std::istream &in, OnEdgeFunction onEdge) {
+void parseDotGraph(std::istream &in, const OnEdgeFunction &onEdge) {
   in.unsetf(std::ios::skipws);
   if (!dot::parse(boost::spirit::istream_iterator{in},
                   boost::spirit::istream_iterator{}, onEdge)) {
