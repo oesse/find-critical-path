@@ -12,5 +12,6 @@ set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/lib)
 find_package(Boost 1.71 REQUIRED)
 
 include(Testing)
+include(MaintainerBuild)
 
 add_subdirectory(src)
