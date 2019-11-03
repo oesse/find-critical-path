@@ -1,4 +1,5 @@
 # find-critical-path
+[![Build Status](https://travis-ci.org/oesse/find-critical-path.svg?branch=master)](https://travis-ci.org/oesse/find-critical-path)
 
 This is a tool to find the critical path in the build process of Yocto
 artifacts. It uses the information provided by the task dependency graph and a
