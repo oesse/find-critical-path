@@ -13,7 +13,7 @@ if(BUILD_TESTING)
   target_link_libraries(TestMain PUBLIC Catch2::Catch2)
 
   function(add_test_case test_source_name library)
-    get_filename_component(test_name ${test_source_name} NAME_WLE)
+    string(REGEX REPLACE "^(.*)\\.cpp" "\\1" test_name "${test_source_name}")
 
     add_executable(${test_name} ${test_source_name})
     target_link_libraries(${test_name} PRIVATE ${library} TestMain)
