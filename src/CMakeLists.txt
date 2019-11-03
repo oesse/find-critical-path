@@ -18,6 +18,7 @@ target_sources(Buildstats PRIVATE Buildstats.cpp)
 
 add_executable(main main.cpp)
 target_link_libraries(main PRIVATE Buildstats Dot Graph)
+set_target_properties(main PROPERTIES OUTPUT_NAME find-critical-path)
 
 add_test_case(Graph.test.cpp Graph)
 add_test_case(TopologicalSort.test.cpp Graph)
