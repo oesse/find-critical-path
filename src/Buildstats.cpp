@@ -52,16 +52,25 @@ Buildstats::Buildstats(std::filesystem::path root)
     : root{std::move(root)},
       packageDirectories(getPackageDirectories(this->root)) {}
 
-auto Buildstats::getElapsedTime(std::string_view nodeLabel) const -> double {
-
+auto Buildstats::getElapsedTime(std::string_view nodeLabel) const
+    -> std::optional<double> {
   auto pos = nodeLabel.rfind(".");
   auto packageName = nodeLabel.substr(0, pos);
   auto packageStage = nodeLabel.substr(pos + 1);
 
-  const auto &packageDirectory =
-      packageDirectories.find(std::string(packageName))->second;
+  auto it = packageDirectories.find(std::string(packageName));
+  if (it == packageDirectories.end()) {
+    return std::nullopt;
+  }
+
+  const auto &packageDirectory = it->second;
 
   auto filePath = root / packageDirectory / packageStage;
+  std::filesystem::directory_entry entry{filePath};
+  if (!entry.is_regular_file()) {
+    return std::nullopt;
+  }
+
   std::ifstream input(filePath);
   return parseElapsedTime(input);
 }
@@ -69,7 +78,7 @@ auto Buildstats::getElapsedTime(std::string_view nodeLabel) const -> double {
 auto Buildstats::getElapsedTimeOrDefault(std::string_view nodeLabel,
                                          double defaultValue) const -> double {
   try {
-    return getElapsedTime(nodeLabel);
+    return getElapsedTime(nodeLabel).value();
   } catch (...) {
     return defaultValue;
   }
