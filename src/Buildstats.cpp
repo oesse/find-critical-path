@@ -77,9 +77,9 @@ auto Buildstats::getElapsedTime(std::string_view nodeLabel) const
 
 auto Buildstats::getElapsedTimeOrDefault(std::string_view nodeLabel,
                                          double defaultValue) const -> double {
-  try {
-    return getElapsedTime(nodeLabel).value();
-  } catch (...) {
-    return defaultValue;
+  const auto elapsed = getElapsedTime(nodeLabel);
+  if (elapsed.has_value()) {
+    return elapsed.value();
   }
+  return defaultValue;
 }
