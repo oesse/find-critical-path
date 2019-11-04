@@ -40,6 +40,10 @@ In order to build the tool you need
   [Spirit X3](https://www.boost.org/doc/libs/1_71_0/libs/spirit/doc/x3/html/index.html)
   (tested with version 1.71)
 
+Additionally, for development the following things are needed:
+* [Catch2](https://github.com/catchorg/Catch2) >= 2.10
+* [clang-tidy](https://clang.llvm.org/extra/clang-tidy/) (optional)
+
 ### Build, test, install
 
 Use CMake to build, optionally test and install the tool:
@@ -49,3 +53,4 @@ cmake .. -DCMAKE_BUILD_TYPE=Release
 make && make test
 make install
 ```
+
