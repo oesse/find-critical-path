@@ -36,6 +36,30 @@ auto loadGraph(const std::string &dotPath, const std::string &buildstatsPath)
   return g;
 }
 
+auto connectVirtualSink(WeightedGraph &g) -> NodeIndex {
+    auto sinks = findSinks(g);
+    auto virtualSinkId = g.nodeCount();
+    for (auto sinkId : sinks) {
+      g.addEdge(sinkId, virtualSinkId, 0.0);
+    }
+    return virtualSinkId;
+}
+
+void printCriticalPath(std::ostream &out, const NodeList &criticalPath, const LabeledGraph<WeightedGraph> &g) {
+    for (const auto nodeId : criticalPath) {
+      const auto label = g.getLabel(nodeId);
+      if (!label.has_value()) {
+        break;
+      }
+
+      const auto &adjacentNodes = g.graph().adjacentNodes(nodeId);
+      const auto elapsedTime =
+          adjacentNodes.empty() ? 0.0 : g.graph().weight(nodeId, adjacentNodes.front());
+
+      out << label.value() << " " << elapsedTime << '\n';
+    }
+}
+
 auto main(int argc, const char *argv[]) -> int {
   if (argc != 3) {
     // NOLINTNEXTLINE cppcoreguidelines-pro-bounds-pointer-arithmetic
@@ -51,25 +75,10 @@ auto main(int argc, const char *argv[]) -> int {
     const auto buildstatsPath = argv[2];
     auto g = loadGraph(dotPath, buildstatsPath);
 
-    std::cout << "node count: " << g.graph().nodeCount() << '\n';
+    const auto virtualSinkId = connectVirtualSink(g.graph());
+    const auto criticalPath = findCriticalPath(g.graph(), virtualSinkId);
 
-    auto sinks = findSinks(g.graph());
-    auto virtualSinkId = g.graph().nodeCount();
-    for (auto sinkId : sinks) {
-      g.graph().addEdge(sinkId, virtualSinkId, 0.0);
-    }
-    auto criticalPath = findCriticalPath(g.graph(), virtualSinkId);
-
-    auto toLabel = [&](NodeIndex i) { return g.getLabel(i).value(); };
-
-    std::cout << "=============\n"
-              << "critical path\n"
-              << "=============\n";
-
-    std::transform(begin(criticalPath), end(criticalPath) - 1,
-                   std::ostream_iterator<std::string>{std::cout, "\n"},
-                   toLabel);
-    std::cout << '\n';
+    printCriticalPath(std::cout, criticalPath, g);
   } catch (const std::exception &e) {
     std::cerr << "Error: " << e.what() << '\n';
     return -1;
